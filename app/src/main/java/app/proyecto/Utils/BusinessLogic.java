@@ -24,7 +24,7 @@ public class BusinessLogic {
 		FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 		List<Product> items = new ArrayList<>();
 
-		firebaseFirestore.collection(restaurantIdentifier).get().addOnCanceledListener(new OnCompleteListener<Task>());
+//		firebaseFirestore.collection(restaurantIdentifier).get().addOnCanceledListener(new OnCompleteListener<Task>());
 
 //		items.add(new Product(R.drawable.img01 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
 //		items.add(new Product(R.drawable.img02 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
