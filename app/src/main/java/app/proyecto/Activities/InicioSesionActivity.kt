@@ -35,6 +35,7 @@ class InicioSesionActivity : AppCompatActivity() {
     }
 
     private fun setup() {
+
         db.collection("user").get().addOnCompleteListener() {
             if(it.isSuccessful){
                 lista.clear()

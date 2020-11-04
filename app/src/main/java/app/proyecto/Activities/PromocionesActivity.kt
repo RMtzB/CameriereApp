@@ -24,6 +24,7 @@ class PromocionesActivity : AppCompatActivity() {
 
         rv_promos.layoutManager = GridLayoutManager(this,2)
         rv_promos.adapter=adapterPromo
+
         val db : FirebaseFirestore= FirebaseFirestore.getInstance()
         db.collection("Promos").get().addOnCompleteListener(){
             if(it.isSuccessful){
