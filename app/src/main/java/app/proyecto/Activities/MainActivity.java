@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+import java.util.ArrayList;
 import java.util.List;
 import app.proyecto.Adapters.RecyclerViewAdapterMenu;
 import app.proyecto.Models.Product;
@@ -35,11 +36,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 		setContentView(activityMainBinding.getRoot());
 
 		code = getExtras();
+		items = new ArrayList<>();
 		activityMainBinding.topAppBar.setTitle(code[1]);
-		items = getRestaurantMenu("menuToqs");
-
 		menuConfiguration();
 		recyclerViewConfiguration();
+		getRestaurantMenu("menu" + code[1], items, recyclerViewAdapterMenu);
 	}
 
 	private String[] getExtras() {

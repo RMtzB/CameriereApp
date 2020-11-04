@@ -1,18 +1,27 @@
 package app.proyecto.Utils;
 
 import android.content.Context;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
+
+import app.proyecto.Adapters.RecyclerViewAdapterMenu;
 import app.proyecto.DataAccess.DAO;
 import app.proyecto.Models.CartOrdersItem;
 import app.proyecto.Models.Product;
 import app.proyecto.R;
+
+import static android.content.ContentValues.TAG;
 
 public class BusinessLogic {
 	private final DAO dao;
@@ -20,16 +29,26 @@ public class BusinessLogic {
 		dao = new DAO(context);
 	}
 
-	public static List<Product> getRestaurantMenu(String restaurantIdentifier) {
+	public static void getRestaurantMenu(String restaurantIdentifier, List<Product> items, RecyclerViewAdapterMenu recyclerViewAdapterMenu) {
 		FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-		List<Product> items = new ArrayList<>();
 
-//		firebaseFirestore.collection(restaurantIdentifier).get().addOnCanceledListener(new OnCompleteListener<Task>());
+		firebaseFirestore.collection(restaurantIdentifier).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+			@Override
+			public void onComplete(@NonNull Task<QuerySnapshot> task) {
+				if(task.isSuccessful()) {
+					for(QueryDocumentSnapshot document : task.getResult()) {
+						items.add(new Product(document.getString("Imagen"), document.getString("Nombre"), document.getString("Descripcion"), document.getDouble("Precio"), document.getString("Ingredientes")));
+					}
+
+					recyclerViewAdapterMenu.notifyDataSetChanged();
+				} else {
+					Log.d(TAG, "Error getting documents: ", task.getException());
+				}
+			}
+		});
 
 //		items.add(new Product(R.drawable.img01 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
 //		items.add(new Product(R.drawable.img02 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
-
-		return items;
 	}
 
 	public List<CartOrdersItem> getCart() {

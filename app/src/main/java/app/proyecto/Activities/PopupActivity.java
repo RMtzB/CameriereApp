@@ -54,7 +54,7 @@ public class PopupActivity extends AppCompatActivity {
 		if(disableButtons == 1) {
 			CartOrdersItem cartOrdersItem = (CartOrdersItem)object;
 
-			Picasso.get().load(Integer.parseInt(cartOrdersItem.getImage())).fit().into(activityPopupBinding.imageViewProduct);
+			Picasso.get().load(cartOrdersItem.getImage()).fit().into(activityPopupBinding.imageViewProduct);
 
 			activityPopupBinding.textViewProductName.setText(cartOrdersItem.getName());
 			activityPopupBinding.textViewProductDescription.setText(cartOrdersItem.getDescription());
@@ -63,7 +63,7 @@ public class PopupActivity extends AppCompatActivity {
 		} else {
 			Product product = (Product)object;
 
-//			Picasso.get().load(product.getImage()).fit().into(activityPopupBinding.imageViewProduct);
+			Picasso.get().load(product.getImage()).fit().into(activityPopupBinding.imageViewProduct);
 
 			activityPopupBinding.textViewProductName.setText(product.getName());
 			activityPopupBinding.textViewProductDescription.setText(product.getDescription());
