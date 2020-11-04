@@ -65,6 +65,11 @@ class InicioSesionActivity : AppCompatActivity() {
                         pd.dismiss()
                         showhome(user.Nombre,user.Apellido,user.CorreoE)
                     }
+                    else{
+                        pd.dismiss()
+                        showAlert(0)
+
+                    }
                 }
             } else
                 showAlert(1)
