@@ -18,6 +18,7 @@ import app.proyecto.databinding.ActivityMainBinding;
 
 
 
+import static app.proyecto.Utils.BusinessLogic.getRestaurantIdentifier;
 import static app.proyecto.Utils.BusinessLogic.getRestaurantMenu;
 import static app.proyecto.Utils.Constants.DISABLE_BUTTONS;
 import static app.proyecto.Utils.Constants.REQUEST_CODE_POPUP_MENU;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 	private RecyclerViewAdapterMenu recyclerViewAdapterMenu;
 	private List<Product> items;
 	private String[] code;
+	private String restaurantIdentifier;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +39,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
 		code = getExtras();
 		items = new ArrayList<>();
+
 		activityMainBinding.topAppBar.setTitle(code[1]);
+
 		menuConfiguration();
 		recyclerViewConfiguration();
-		getRestaurantMenu("menu" + code[1], items, recyclerViewAdapterMenu);
+
+		restaurantIdentifier = getRestaurantIdentifier(code[1]);
+
+		getRestaurantMenu(restaurantIdentifier, items, recyclerViewAdapterMenu);
 	}
 
 	private String[] getExtras() {
@@ -60,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
 	private void recyclerViewConfiguration() {
 		layoutManager = new LinearLayoutManager(this);
-		recyclerViewAdapterMenu = new RecyclerViewAdapterMenu(items, R.layout.menu_item, this);
+		recyclerViewAdapterMenu = new RecyclerViewAdapterMenu(items, R.layout.menu_item, this, this);
 
 		activityMainBinding.recyclerViewMenu.setLayoutManager(layoutManager);
 		activityMainBinding.recyclerViewMenu.setAdapter(recyclerViewAdapterMenu);

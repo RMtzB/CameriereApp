@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Proyecto</string>
+    <string name="app_name">Cameriere</string>
     <string name="shopping_cart">Carrito</string>
     <string name="orders">Pedidos</string>
     <string name="add_to_shopping_cart">Agregar</string>

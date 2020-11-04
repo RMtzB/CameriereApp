@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import app.proyecto.Models.CartOrdersItem;
 import app.proyecto.Models.Product;
 import app.proyecto.Utils.BusinessLogic;
@@ -54,7 +54,7 @@ public class PopupActivity extends AppCompatActivity {
 		if(disableButtons == 1) {
 			CartOrdersItem cartOrdersItem = (CartOrdersItem)object;
 
-			Picasso.get().load(cartOrdersItem.getImage()).fit().into(activityPopupBinding.imageViewProduct);
+			Glide.with(this).load(cartOrdersItem.getImage()).fitCenter().centerCrop().into(activityPopupBinding.imageViewProduct);
 
 			activityPopupBinding.textViewProductName.setText(cartOrdersItem.getName());
 			activityPopupBinding.textViewProductDescription.setText(cartOrdersItem.getDescription());
@@ -63,7 +63,7 @@ public class PopupActivity extends AppCompatActivity {
 		} else {
 			Product product = (Product)object;
 
-			Picasso.get().load(product.getImage()).fit().into(activityPopupBinding.imageViewProduct);
+			Glide.with(this).load(product.getImage()).fitCenter().centerCrop().into(activityPopupBinding.imageViewProduct);
 
 			activityPopupBinding.textViewProductName.setText(product.getName());
 			activityPopupBinding.textViewProductDescription.setText(product.getDescription());

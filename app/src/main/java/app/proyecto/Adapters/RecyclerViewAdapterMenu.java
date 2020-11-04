@@ -1,13 +1,12 @@
 package app.proyecto.Adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.squareup.picasso.Picasso;
-
+import com.bumptech.glide.Glide;
 import java.util.List;
 import app.proyecto.Models.Product;
 import app.proyecto.Utils.OnClickListener;
@@ -17,6 +16,7 @@ public class RecyclerViewAdapterMenu extends RecyclerView.Adapter<RecyclerViewAd
 	private List<Product> items;
 	private int layout;
 	private OnClickListener listener;
+	private Context context;
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
 		private MenuItemBinding menuItemBinding;
@@ -38,10 +38,11 @@ public class RecyclerViewAdapterMenu extends RecyclerView.Adapter<RecyclerViewAd
 		}
 	}
 
-	public RecyclerViewAdapterMenu(List<Product> items, int layout, OnClickListener listener) {
+	public RecyclerViewAdapterMenu(List<Product> items, int layout, OnClickListener listener, Context context) {
 		this.items = items;
 		this.layout = layout;
 		this.listener = listener;
+		this.context = context;
 	}
 
 	@NonNull
@@ -58,7 +59,7 @@ public class RecyclerViewAdapterMenu extends RecyclerView.Adapter<RecyclerViewAd
 
 		holder.setClickListener(listener, product);
 
-		Picasso.get().load(product.getImage()).fit().into(holder.menuItemBinding.imageViewProduct);
+		Glide.with(context).load(product.getImage()).fitCenter().centerCrop().into(holder.menuItemBinding.imageViewProduct);
 
 		holder.menuItemBinding.textViewProductName.setText(product.getName());
 		holder.menuItemBinding.textViewProductDescription.setText(product.getDescription());

@@ -1,9 +1,11 @@
 package app.proyecto.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import java.util.List;
@@ -92,6 +94,12 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 		intent.putExtra("object", (CartOrdersItem)object);
 
 		startActivityForResult(intent, REQUEST_CODE_POPUP_MENU);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		finish();
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

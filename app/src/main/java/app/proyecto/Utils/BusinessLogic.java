@@ -46,9 +46,6 @@ public class BusinessLogic {
 				}
 			}
 		});
-
-//		items.add(new Product(R.drawable.img01 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
-//		items.add(new Product(R.drawable.img02 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
 	}
 
 	public List<CartOrdersItem> getCart() {
@@ -73,6 +70,10 @@ public class BusinessLogic {
 
 			return true;
 		}
+	}
+
+	public static String getRestaurantIdentifier(String name) {
+		return "menu" + name.replace(" ", "");
 	}
 
 	public void removeItemFromCart(String name) {
