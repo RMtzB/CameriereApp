@@ -153,7 +153,6 @@ class InicioSesionActivity : AppCompatActivity() {
         prefs.putString("ape", Apellido)
         prefs.putString("email",CorreoE)
         prefs.apply()
-
     }
 
 

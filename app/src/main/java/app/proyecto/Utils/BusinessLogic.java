@@ -1,16 +1,27 @@
 package app.proyecto.Utils;
 
 import android.content.Context;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
+
+import app.proyecto.Adapters.RecyclerViewAdapterMenu;
 import app.proyecto.DataAccess.DAO;
 import app.proyecto.Models.CartOrdersItem;
 import app.proyecto.Models.Product;
 import app.proyecto.R;
+
+import static android.content.ContentValues.TAG;
 
 public class BusinessLogic {
 	private final DAO dao;
@@ -18,31 +29,26 @@ public class BusinessLogic {
 		dao = new DAO(context);
 	}
 
-	public static List<Product> getRestaurantMenu(String restaurantIdentifier) {
-//		FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-//		String nameRestaurant = "";
-		List<Product> items = new ArrayList<>();
-//
-//
-//		firebaseFirestore.collection(nameRestaurant).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//			@Override
-//			public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//				if(!queryDocumentSnapshots.isEmpty()) {
-//					List<DocumentSnapshot> documentos = queryDocumentSnapshots.getDocuments();
-//
-//					for (int i = 0; i < documentos.size(); i++) {
-//						DocumentSnapshot document = documentos.get(i);
-//
-//						items.add(new Product(document.getString("Imagen"), document.getString("Nombre"), document.getString("Descripcion"), document.getDouble("Precio"), document.getString("Ingredientes")));
-//					}
-//				}
-//			}
-//		});
+	public static void getRestaurantMenu(String restaurantIdentifier, List<Product> items, RecyclerViewAdapterMenu recyclerViewAdapterMenu) {
+		FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-		items.add(new Product(R.drawable.img01 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
-		items.add(new Product(R.drawable.img02 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
+		firebaseFirestore.collection(restaurantIdentifier).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+			@Override
+			public void onComplete(@NonNull Task<QuerySnapshot> task) {
+				if(task.isSuccessful()) {
+					for(QueryDocumentSnapshot document : task.getResult()) {
+						items.add(new Product(document.getString("Imagen"), document.getString("Nombre"), document.getString("Descripcion"), document.getDouble("Precio"), document.getString("Ingredientes")));
+					}
 
-		return items;
+					recyclerViewAdapterMenu.notifyDataSetChanged();
+				} else {
+					Log.d(TAG, "Error getting documents: ", task.getException());
+				}
+			}
+		});
+
+//		items.add(new Product(R.drawable.img01 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
+//		items.add(new Product(R.drawable.img02 + "", "Nombre del producto", "Esta es la descripcion del producto", 34.00, "dsdfsd, dfsdf, dsfdsfs, dsfsdfsdfsdfsd, dsf"));
 	}
 
 	public List<CartOrdersItem> getCart() {

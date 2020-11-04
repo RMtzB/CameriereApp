@@ -58,7 +58,7 @@ public class RecyclerViewAdapterMenu extends RecyclerView.Adapter<RecyclerViewAd
 
 		holder.setClickListener(listener, product);
 
-//		Picasso.get().load(product.getImage()).fit().into(holder.menuItemBinding.imageViewProduct);
+		Picasso.get().load(product.getImage()).fit().into(holder.menuItemBinding.imageViewProduct);
 
 		holder.menuItemBinding.textViewProductName.setText(product.getName());
 		holder.menuItemBinding.textViewProductDescription.setText(product.getDescription());
