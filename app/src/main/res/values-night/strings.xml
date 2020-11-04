@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="shopping_cart">Carrito</string>
+	<string name="orders">Pedidos</string>
+	<string name="order">Ordenar</string>
+	<string name="observations">Observaciones</string>
+	<string name="ingredients">Ingredientes</string>
+	<string name="description">Descripción</string>
+    <string name="pay">Pagar</string>
+</resources>
