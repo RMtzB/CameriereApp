@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import java.util.List;
 import app.proyecto.Adapters.RecyclerViewAdapterShoppingOrders;
@@ -27,6 +28,7 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 	private RecyclerViewAdapterShoppingOrders recyclerViewAdapterShoppingOrders;
 	private BusinessLogic businessLogic;
 	private boolean cart;
+	private ArrayAdapter<CharSequence> spinnerAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +38,14 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 
 		businessLogic = new BusinessLogic(this);
 
+		spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.pieces, android.R.layout.simple_spinner_dropdown_item);
+
 		getExtras();
+
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		viewConfiguration();
+
 		onClickListenerConfigurations();
 
 		recyclerViewConfiguration();
@@ -81,7 +88,7 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 
 	private void recyclerViewConfiguration() {
 		layoutManager = new LinearLayoutManager(this);
-		recyclerViewAdapterShoppingOrders = new RecyclerViewAdapterShoppingOrders(R.layout.cart_and_orders_item, items, this, this);
+		recyclerViewAdapterShoppingOrders = new RecyclerViewAdapterShoppingOrders(R.layout.cart_and_orders_item, items, this, this, spinnerAdapter, cart);
 
 		activityShoppingOrdersBinding.recyclerViewCartOrders.setLayoutManager(layoutManager);
 		activityShoppingOrdersBinding.recyclerViewCartOrders.setAdapter(recyclerViewAdapterShoppingOrders);
@@ -89,11 +96,13 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 
 	@Override
 	public void onClick(Object object) {
-		Intent intent = new Intent(this, PopupActivity.class);
+		if(cart) {
+			Intent intent = new Intent(this, PopupActivity.class);
 
-		intent.putExtra("object", (CartOrdersItem)object);
+			intent.putExtra("object", (CartOrdersItem)object);
 
-		startActivityForResult(intent, REQUEST_CODE_POPUP_MENU);
+			startActivityForResult(intent, REQUEST_CODE_POPUP_MENU);
+		}
 	}
 
 	@Override

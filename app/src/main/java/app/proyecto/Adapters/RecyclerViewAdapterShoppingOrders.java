@@ -3,6 +3,7 @@ package app.proyecto.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
@@ -16,6 +17,8 @@ public class RecyclerViewAdapterShoppingOrders extends RecyclerView.Adapter<Recy
 	private List<CartOrdersItem> items;
 	private OnClickListener listener;
 	private OnRemoveItem remove;
+	private ArrayAdapter<CharSequence> spinnerAdapter;
+	private boolean cart;
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
 		private CartAndOrdersItemBinding cartAndOrdersItemBinding;
@@ -37,11 +40,13 @@ public class RecyclerViewAdapterShoppingOrders extends RecyclerView.Adapter<Recy
 		}
 	}
 
-	public RecyclerViewAdapterShoppingOrders(int layout, List<CartOrdersItem> items, OnClickListener listener, OnRemoveItem remove) {
+	public RecyclerViewAdapterShoppingOrders(int layout, List<CartOrdersItem> items, OnClickListener listener, OnRemoveItem remove, ArrayAdapter<CharSequence> spinnerAdapter, boolean cart) {
 		this.layout = layout;
 		this.items = items;
 		this.listener = listener;
 		this.remove = remove;
+		this.spinnerAdapter = spinnerAdapter;
+		this.cart = cart;
 	}
 
 	@NonNull
@@ -62,10 +67,16 @@ public class RecyclerViewAdapterShoppingOrders extends RecyclerView.Adapter<Recy
 			@Override
 			public void onClick(View view) {
 				remove.onRemove(cartOrdersItem.getName());
-				items.remove(position);
-				notifyItemRemoved(position);
+				items.remove(cartOrdersItem);
+				notifyDataSetChanged();
 			}
 		});
+
+		holder.cartAndOrdersItemBinding.spinnerPieces.setAdapter(spinnerAdapter);
+		holder.cartAndOrdersItemBinding.spinnerPieces.setSelection(cartOrdersItem.getPieces() - 1);
+
+		if(!cart)
+			holder.cartAndOrdersItemBinding.spinnerPieces.setEnabled(false);
 
 		holder.cartAndOrdersItemBinding.textViewProductName.setText(cartOrdersItem.getName());
 		holder.cartAndOrdersItemBinding.textViewObservations.setText(cartOrdersItem.getObservations());
