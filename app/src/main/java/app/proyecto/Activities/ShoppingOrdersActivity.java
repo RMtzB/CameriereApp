@@ -38,8 +38,6 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 
 		businessLogic = new BusinessLogic(this);
 
-		spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.pieces, android.R.layout.simple_spinner_dropdown_item);
-
 		getExtras();
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -87,7 +85,10 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 	}
 
 	private void recyclerViewConfiguration() {
+		spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.pieces, android.R.layout.simple_spinner_dropdown_item);
+
 		layoutManager = new LinearLayoutManager(this);
+
 		recyclerViewAdapterShoppingOrders = new RecyclerViewAdapterShoppingOrders(R.layout.cart_and_orders_item, items, this, this, spinnerAdapter, cart);
 
 		activityShoppingOrdersBinding.recyclerViewCartOrders.setLayoutManager(layoutManager);

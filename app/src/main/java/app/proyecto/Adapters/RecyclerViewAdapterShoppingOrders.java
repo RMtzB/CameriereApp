@@ -75,8 +75,10 @@ public class RecyclerViewAdapterShoppingOrders extends RecyclerView.Adapter<Recy
 		holder.cartAndOrdersItemBinding.spinnerPieces.setAdapter(spinnerAdapter);
 		holder.cartAndOrdersItemBinding.spinnerPieces.setSelection(cartOrdersItem.getPieces() - 1);
 
-		if(!cart)
+		if(!cart) {
 			holder.cartAndOrdersItemBinding.spinnerPieces.setEnabled(false);
+			holder.cartAndOrdersItemBinding.container.removeView(holder.cartAndOrdersItemBinding.buttonDelete);
+		}
 
 		holder.cartAndOrdersItemBinding.textViewProductName.setText(cartOrdersItem.getName());
 		holder.cartAndOrdersItemBinding.textViewObservations.setText(cartOrdersItem.getObservations());
