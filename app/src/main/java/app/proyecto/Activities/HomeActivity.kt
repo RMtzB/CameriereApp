@@ -83,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
         val codigo = prefs.getString("codigo",null)
 
         if (codigo != null) {
-            layoutHome.visibility = View.INVISIBLE
+//            layoutHome.visibility = View.INVISIBLE
             showMain(codigo)
         }
     }
