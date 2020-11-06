@@ -53,7 +53,6 @@ public class DAO {
 	}
 
 	public void setItemPieces(String name, int pieces) {
-
 		dataBase.execSQL("UPDATE " +
 			SQLiteContract.ShoppingOrdersTable.TABLE_NAME + " SET " +
 			SQLiteContract.ShoppingOrdersTable.COLUMN_NAME_PIECES + "= " + pieces + " WHERE " +
@@ -109,6 +108,32 @@ public class DAO {
 
 	public void removeItem(String name) {
 		dataBase.execSQL("DELETE FROM " + SQLiteContract.ShoppingOrdersTable.TABLE_NAME + " WHERE " + SQLiteContract.ShoppingOrdersTable.COLUMN_NAME_NAME + "= " + "'" + name + "'" + " and " + SQLiteContract.ShoppingOrdersTable.COLUMN_NAME_CART + "= 1");
+	}
+
+	public boolean isOrdersEmpty() {
+		Cursor cursor = dataBase.rawQuery("SELECT " +
+			SQLiteContract.ShoppingOrdersTable.COLUMN_NAME_NAME + " FROM " +
+			SQLiteContract.ShoppingOrdersTable.TABLE_NAME + " WHERE " +
+			SQLiteContract.ShoppingOrdersTable.COLUMN_NAME_CART + "= 0", null);
+
+		if(cursor.moveToFirst()) {
+			cursor.close();
+			return false;
+		} else {
+			cursor.close();
+			return true;
+		}
+	}
+
+	public void setCart(String name) {
+		dataBase.execSQL("UPDATE " +
+			SQLiteContract.ShoppingOrdersTable.TABLE_NAME + " SET " +
+			SQLiteContract.ShoppingOrdersTable.COLUMN_NAME_CART + "= " + 0 + " WHERE " +
+			SQLiteContract.ShoppingOrdersTable.COLUMN_NAME_NAME + "= " + "'" + name + "'");
+	}
+
+	public void deleteTable() {
+		dataBase.delete(SQLiteContract.ShoppingOrdersTable.TABLE_NAME, null, null);
 	}
 
 	public void closeDB() {

@@ -3,6 +3,7 @@ package app.proyecto.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import java.util.List;
 import app.proyecto.Models.CartOrdersItem;
 import app.proyecto.Utils.OnClickListener;
 import app.proyecto.Utils.OnRemoveItem;
+import app.proyecto.Utils.OnSetItem;
 import app.proyecto.databinding.CartAndOrdersItemBinding;
 
 public class RecyclerViewAdapterShoppingOrders extends RecyclerView.Adapter<RecyclerViewAdapterShoppingOrders.ViewHolder> {
@@ -19,6 +21,7 @@ public class RecyclerViewAdapterShoppingOrders extends RecyclerView.Adapter<Recy
 	private OnRemoveItem remove;
 	private ArrayAdapter<CharSequence> spinnerAdapter;
 	private boolean cart;
+	private OnSetItem set;
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
 		private CartAndOrdersItemBinding cartAndOrdersItemBinding;
@@ -40,13 +43,14 @@ public class RecyclerViewAdapterShoppingOrders extends RecyclerView.Adapter<Recy
 		}
 	}
 
-	public RecyclerViewAdapterShoppingOrders(int layout, List<CartOrdersItem> items, OnClickListener listener, OnRemoveItem remove, ArrayAdapter<CharSequence> spinnerAdapter, boolean cart) {
+	public RecyclerViewAdapterShoppingOrders(int layout, List<CartOrdersItem> items, OnClickListener listener, OnRemoveItem remove, ArrayAdapter<CharSequence> spinnerAdapter, boolean cart, OnSetItem set) {
 		this.layout = layout;
 		this.items = items;
 		this.listener = listener;
 		this.remove = remove;
 		this.spinnerAdapter = spinnerAdapter;
 		this.cart = cart;
+		this.set = set;
 	}
 
 	@NonNull
@@ -61,23 +65,35 @@ public class RecyclerViewAdapterShoppingOrders extends RecyclerView.Adapter<Recy
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		CartOrdersItem cartOrdersItem = items.get(position);
 
-		holder.setClickListener(listener, cartOrdersItem);
-
-		holder.cartAndOrdersItemBinding.buttonDelete.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				remove.onRemove(cartOrdersItem.getName());
-				items.remove(cartOrdersItem);
-				notifyDataSetChanged();
-			}
-		});
-
 		holder.cartAndOrdersItemBinding.spinnerPieces.setAdapter(spinnerAdapter);
 		holder.cartAndOrdersItemBinding.spinnerPieces.setSelection(cartOrdersItem.getPieces() - 1);
 
 		if(!cart) {
 			holder.cartAndOrdersItemBinding.spinnerPieces.setEnabled(false);
 			holder.cartAndOrdersItemBinding.container.removeView(holder.cartAndOrdersItemBinding.buttonDelete);
+		} else  {
+			holder.cartAndOrdersItemBinding.spinnerPieces.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+					set.onSetPieces(cartOrdersItem.getName(), i + 1);
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> adapterView) {
+
+				}
+			});
+
+			holder.cartAndOrdersItemBinding.buttonDelete.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					remove.onRemove(cartOrdersItem.getName());
+					items.remove(cartOrdersItem);
+					notifyDataSetChanged();
+				}
+			});
+
+			holder.setClickListener(listener, cartOrdersItem);
 		}
 
 		holder.cartAndOrdersItemBinding.textViewProductName.setText(cartOrdersItem.getName());

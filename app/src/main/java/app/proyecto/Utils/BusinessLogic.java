@@ -2,24 +2,20 @@ package app.proyecto.Utils;
 
 import android.content.Context;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import java.util.ArrayList;
 import java.util.List;
-
 import app.proyecto.Adapters.RecyclerViewAdapterMenu;
 import app.proyecto.DataAccess.DAO;
 import app.proyecto.Models.CartOrdersItem;
 import app.proyecto.Models.Product;
-import app.proyecto.R;
+
+
+
 
 import static android.content.ContentValues.TAG;
 
@@ -29,7 +25,7 @@ public class BusinessLogic {
 		dao = new DAO(context);
 	}
 
-	public static void getRestaurantMenu(String restaurantIdentifier, List<Product> items, RecyclerViewAdapterMenu recyclerViewAdapterMenu) {
+	public void getRestaurantMenu(String restaurantIdentifier, List<Product> items, RecyclerViewAdapterMenu recyclerViewAdapterMenu) {
 		FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
 		firebaseFirestore.collection(restaurantIdentifier).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -64,11 +60,10 @@ public class BusinessLogic {
 
 			if(pieces < 10) {
 				dao.setItemPieces(product.getName(), pieces);
+				return true;
 			} else {
 				return false;
 			}
-
-			return true;
 		}
 	}
 
@@ -76,8 +71,20 @@ public class BusinessLogic {
 		return "menu" + name.replace(" ", "");
 	}
 
+	public boolean isOrdersEmpty() {
+		return dao.isOrdersEmpty();
+	}
+
+	public void deleteLists() {
+		dao.deleteTable();
+	}
+
 	public void removeItemFromCart(String name) {
 		dao.removeItem(name);
+	}
+
+	public void setPieces(String name, int pieces) {
+		dao.setItemPieces(name, pieces);
 	}
 
 	public void closeConnection() {

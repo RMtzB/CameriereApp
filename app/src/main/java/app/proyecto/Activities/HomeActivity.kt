@@ -50,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) if (result.contents != null) {
             if (verificarCodigo(result.contents)) {
-                //localCodigo(result.contents)
+                localCodigo(result.contents)
                 showMain(result.contents)
             }
             else

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import java.util.List;
@@ -16,12 +17,13 @@ import app.proyecto.R;
 import app.proyecto.Utils.BusinessLogic;
 import app.proyecto.Utils.OnClickListener;
 import app.proyecto.Utils.OnRemoveItem;
+import app.proyecto.Utils.OnSetItem;
 import app.proyecto.databinding.ActivityShoppingOrdersBinding;
 
 
 import static app.proyecto.Utils.Constants.REQUEST_CODE_POPUP_MENU;
 
-public class ShoppingOrdersActivity extends AppCompatActivity implements OnClickListener, OnRemoveItem {
+public class ShoppingOrdersActivity extends AppCompatActivity implements OnClickListener, OnRemoveItem, OnSetItem {
 	private ActivityShoppingOrdersBinding activityShoppingOrdersBinding;
 	private List<CartOrdersItem> items;
 	private LinearLayoutManager layoutManager;
@@ -89,7 +91,7 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 
 		layoutManager = new LinearLayoutManager(this);
 
-		recyclerViewAdapterShoppingOrders = new RecyclerViewAdapterShoppingOrders(R.layout.cart_and_orders_item, items, this, this, spinnerAdapter, cart);
+		recyclerViewAdapterShoppingOrders = new RecyclerViewAdapterShoppingOrders(R.layout.cart_and_orders_item, items, this, this, spinnerAdapter, cart, this);
 
 		activityShoppingOrdersBinding.recyclerViewCartOrders.setLayoutManager(layoutManager);
 		activityShoppingOrdersBinding.recyclerViewCartOrders.setAdapter(recyclerViewAdapterShoppingOrders);
@@ -97,13 +99,11 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 
 	@Override
 	public void onClick(Object object) {
-		if(cart) {
-			Intent intent = new Intent(this, PopupActivity.class);
+		Intent intent = new Intent(this, PopupActivity.class);
 
-			intent.putExtra("object", (CartOrdersItem)object);
+		intent.putExtra("object", (CartOrdersItem)object);
 
-			startActivityForResult(intent, REQUEST_CODE_POPUP_MENU);
-		}
+		startActivityForResult(intent, REQUEST_CODE_POPUP_MENU);
 	}
 
 	@Override
@@ -115,6 +115,11 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 	@Override
 	public void onRemove(String name) {
 		businessLogic.removeItemFromCart(name);
+	}
+
+	@Override
+	public void onSetPieces(String name, int pieces) {
+		businessLogic.setPieces(name, pieces);
 	}
 
 	@Override

@@ -4,23 +4,29 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import app.proyecto.Adapters.RecyclerViewAdapterMenu;
 import app.proyecto.Models.Product;
 import app.proyecto.R;
+import app.proyecto.Utils.BusinessLogic;
 import app.proyecto.Utils.OnClickListener;
 import app.proyecto.databinding.ActivityMainBinding;
 
 
 
+
 import static app.proyecto.Utils.BusinessLogic.getRestaurantIdentifier;
-import static app.proyecto.Utils.BusinessLogic.getRestaurantMenu;
 import static app.proyecto.Utils.Constants.DISABLE_BUTTONS;
 import static app.proyecto.Utils.Constants.REQUEST_CODE_POPUP_MENU;
 
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 	private List<Product> items;
 	private String[] code;
 	private String restaurantIdentifier;
+	private BusinessLogic businessLogic;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +45,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 		activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
 		setContentView(activityMainBinding.getRoot());
 
+		businessLogic = new BusinessLogic(this);
 		code = getExtras();
 		items = new ArrayList<>();
 
 		activityMainBinding.topAppBar.setTitle(code[1]);
+		activityMainBinding.floatingButtonExitRestaurant.setColorFilter(Color.WHITE);
 
 		menuConfiguration();
 		recyclerViewConfiguration();
 
 		restaurantIdentifier = getRestaurantIdentifier(code[1]);
 
-		getRestaurantMenu(restaurantIdentifier, items, recyclerViewAdapterMenu);
+		businessLogic.getRestaurantMenu(restaurantIdentifier, items, recyclerViewAdapterMenu);
 	}
 
 	private String[] getExtras() {
@@ -93,6 +102,24 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 				return false;
 			}
 		});
+
+		activityMainBinding.floatingButtonExitRestaurant.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if(businessLogic.isOrdersEmpty()) {
+					SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.CCLOM.PREFERENCE_CODIGO", MODE_PRIVATE);
+
+					Editor editor = sharedPreferences.edit();
+
+					editor.clear();
+					editor.apply();
+					businessLogic.deleteLists();
+					finish();
+				} else {
+					Toast.makeText(MainActivity.this, "Favor de pagar su cuenta", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -112,5 +139,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 		intent.putExtra("disableButtons", DISABLE_BUTTONS);
 
 		startActivityForResult(intent, REQUEST_CODE_POPUP_MENU);
+	}
+
+	@Override
+	protected void onDestroy() {
+		businessLogic.closeConnection();
+		super.onDestroy();
 	}
 }
