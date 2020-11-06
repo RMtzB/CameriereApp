@@ -78,7 +78,8 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 			@Override
 			public void onClick(View view) {
 				if(cart) {
-					Toast.makeText(ShoppingOrdersActivity.this, "ersdf", Toast.LENGTH_SHORT).show();
+					businessLogic.sendOrder(items, recyclerViewAdapterShoppingOrders);
+					Toast.makeText(ShoppingOrdersActivity.this, "Su pedido fue enviado correctamente", Toast.LENGTH_SHORT).show();
 				} else {
 					Toast.makeText(ShoppingOrdersActivity.this, "gfdgfdgdf", Toast.LENGTH_SHORT).show();
 				}

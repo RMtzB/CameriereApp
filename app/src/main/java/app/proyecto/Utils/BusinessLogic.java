@@ -10,6 +10,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 import app.proyecto.Adapters.RecyclerViewAdapterMenu;
+import app.proyecto.Adapters.RecyclerViewAdapterShoppingOrders;
 import app.proyecto.DataAccess.DAO;
 import app.proyecto.Models.CartOrdersItem;
 import app.proyecto.Models.Product;
@@ -85,6 +86,15 @@ public class BusinessLogic {
 
 	public void setPieces(String name, int pieces) {
 		dao.setItemPieces(name, pieces);
+	}
+
+	public void sendOrder(List<CartOrdersItem> itemsInCart, RecyclerViewAdapterShoppingOrders recyclerViewAdapterShoppingOrders) {
+		for(int i = 0; i < itemsInCart.size(); i++) {
+			dao.setCart(itemsInCart.get(i).getName());
+		}
+
+		itemsInCart.clear();
+		recyclerViewAdapterShoppingOrders.notifyDataSetChanged();
 	}
 
 	public void closeConnection() {

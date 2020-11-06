@@ -4,8 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -127,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if(resultCode == RESULT_OK) {
-			Toast.makeText(this, "Hola", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Se agrego al carrito correctamente", Toast.LENGTH_LONG).show();
 		}
 	}
 
