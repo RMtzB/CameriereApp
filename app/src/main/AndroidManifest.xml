@@ -9,22 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto">
-
+        <activity android:name=".Activities.CambiarContraseActivity"></activity>
         <activity android:name=".Activities.PromocionesActivity" />
-
         <activity android:name=".Activities.RecuperacionActivity" />
-
         <activity android:name=".Activities.RegistroActivity" />
-
         <activity android:name=".Activities.HomeActivity" />
-
         <activity
             android:name=".Activities.PopupActivity"
             android:theme="@style/Theme.Proyecto.NoActionBar" />
-
-        <activity
-            android:name=".Activities.ShoppingOrdersActivity" />
-
+        <activity android:name=".Activities.ShoppingOrdersActivity" />
         <activity android:name=".Activities.InicioSesionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,11 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.MainActivity"
             android:theme="@style/Theme.Proyecto.NoActionBar" />
-
     </application>
 
 </manifest>

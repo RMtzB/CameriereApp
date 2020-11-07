@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">>
+    <item
+        android:id="@+id/menu_editar_info"
+        android:title="Editar informacion"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_cambiar_contra"
+        android:title="Cambiar Contraseña"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_cerrar_sesion"
+        android:title="Cerrar Sesion"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_eliminar_cuenta"
+        android:title="Eliminar Cuenta"
+        app:showAsAction="never"/>
+</menu>

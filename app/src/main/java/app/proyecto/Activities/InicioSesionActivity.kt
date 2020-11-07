@@ -79,7 +79,7 @@ class InicioSesionActivity : AppCompatActivity() {
             showRegistro()
         }
         txtOlvC.setOnClickListener() {
-            showPromo()
+            showRecuperacion()
 
         }
 
@@ -114,15 +114,17 @@ class InicioSesionActivity : AppCompatActivity() {
         }
         startActivity(homeIntent)
     }
-    private fun showPromo(){
-        val promoIntent = Intent(this, PromocionesActivity::class.java).apply {}
-        startActivity(promoIntent)
-    }
+
 
     private fun showRegistro() {
         val RegistroIntent = Intent(this, RegistroActivity::class.java).apply {
         }
         startActivity(RegistroIntent)
+    }
+    private fun showRecuperacion() {
+        val RecuperacionIntent = Intent(this, RecuperacionActivity::class.java).apply {
+        }
+        startActivity(RecuperacionIntent)
     }
 
     private fun session() {

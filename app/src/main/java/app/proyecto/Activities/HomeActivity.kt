@@ -1,10 +1,14 @@
 package app.proyecto.Activities
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.Switch
 import androidx.appcompat.app.AlertDialog
 import app.proyecto.R
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +29,37 @@ class HomeActivity : AppCompatActivity() {
         btnEscaner.setOnClickListener(mOnclickListener)
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_home,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.menu_cambiar_contra->{
+                startActivity(Intent(this,CambiarContraseActivity::class.java))
+                true
+            }
+
+            R.id.menu_cerrar_sesion->{
+
+                true
+            }
+            R.id.menu_editar_info->{
+                true
+            }
+            R.id.menu_eliminar_cuenta->{
+                true
+            }
+
+            else-> super.onOptionsItemSelected(item)
+
+        }
+
+    }
+
+
     override fun onStart() {
         super.onStart()
         layoutHome.visibility = View.VISIBLE
@@ -34,16 +69,8 @@ class HomeActivity : AppCompatActivity() {
         title="Inicio"
         txtVNombreC.text=name+ape
         txtvCorreo.text=correo
-        txtvCodigo.text="Codigo"
-        btnCerrarSesion.setOnClickListener(){
-            //Borrado de preferencias
-            val prefs= getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-            prefs.clear()
-            prefs.apply()
+        //txtvCodigo.text="Codigo"
 
-            FirebaseAuth.getInstance().signOut()
-            onBackPressed()
-        }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -55,7 +82,7 @@ class HomeActivity : AppCompatActivity() {
             }
             else
                 showAlert("Codigo no registrado en la aplicacion")
-        } else txtvCodigo!!.text = "Error"
+        } else  showAlert("Codigo no registrado en la aplicacion")
     }
     private val mOnclickListener = View.OnClickListener { IntentIntegrator(this@HomeActivity).initiateScan() }
 
@@ -87,6 +114,13 @@ class HomeActivity : AppCompatActivity() {
             showMain(codigo)
         }
     }
+    private fun cerrarSesion(){
+        val prefs= getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+        prefs.clear()
+        prefs.apply()
+        FirebaseAuth.getInstance().signOut()
+        onBackPressed()
+    }
 
     private fun showAlert(Error:String){
         val builder= AlertDialog.Builder(this)
@@ -95,5 +129,43 @@ class HomeActivity : AppCompatActivity() {
         builder.setPositiveButton("Aceptar",null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+    /**
+     * 0 = cerrar sesion
+     * 1= Eliminar Cuenta
+     *
+     */
+
+
+    private fun showAlert(it: Int){
+        val builder= AlertDialog.Builder(this)
+        when(it){
+            //en caso de la entradda =0 se cerrara sesion
+            0->{
+                builder.setTitle("Confirmar")
+                builder.setMessage("Seguro que desea Cerrar Sesion?")
+                builder.setPositiveButton("Aceptar", DialogInterface.OnClickListener(){ dialogInterface: DialogInterface, i: Int ->
+                    cerrarSesion()
+                })
+                builder.setNegativeButton("Cancelar",null)
+            }
+            //En caso de entrada=1 se Eliminara cuenta
+            1->{
+                builder.setTitle("Confirmar")
+                builder.setMessage("Seguro que desea Cerrar Sesion?")
+                builder.setPositiveButton("Aceptar", DialogInterface.OnClickListener(){ dialogInterface: DialogInterface, i: Int ->
+                    cerrarSesion()
+                })
+                builder.setNegativeButton("Cancelar",null)
+
+            }
+
+
+
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+
     }
 }

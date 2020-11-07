@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Activities.RegistroActivity">
+    tools:context=".Activities.CambiarContraseActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,52 +17,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="Inserta contraseña anterior" />
 
-            <EditText
-                android:id="@+id/txtNombre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Nombre(s)"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/txtApellidos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Apellido(s)"
-                android:inputType="textPersonName" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/txtCorreoEle"
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:ems="10"
-            android:hint="Correo Electronico"
-            android:inputType="textEmailAddress" />
+            android:layout_height="30dp" />
 
         <EditText
-            android:id="@+id/txtContrase"
+            android:id="@+id/editTextTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Contraseña"
             android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/txtConfirmContrase"
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="TextView" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <EditText
+            android:id="@+id/editTextTextPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Confirma Contraseña"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <EditText
+            android:id="@+id/editTextTextPassword3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
             android:inputType="textPassword" />
 
         <LinearLayout
@@ -71,18 +70,23 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnRegistrar2"
-                android:layout_width="match_parent"
+                android:id="@+id/btnConfirmar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Registrar" />
+                android:layout_weight="1"
+                android:text="Button" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
             <Button
-                android:id="@+id/btnCancelar"
-                android:layout_width="match_parent"
+                android:id="@+id/btnCancelarContra"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancelar" />
+                android:layout_weight="1"
+                android:text="Button" />
         </LinearLayout>
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
