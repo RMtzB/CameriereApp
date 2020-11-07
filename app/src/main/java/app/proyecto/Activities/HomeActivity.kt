@@ -43,13 +43,14 @@ class HomeActivity : AppCompatActivity() {
             }
 
             R.id.menu_cerrar_sesion->{
-
+                showAlert(0)
                 true
             }
             R.id.menu_editar_info->{
                 true
             }
             R.id.menu_eliminar_cuenta->{
+                showAlert(1)
                 true
             }
 
