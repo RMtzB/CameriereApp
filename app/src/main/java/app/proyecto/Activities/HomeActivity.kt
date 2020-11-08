@@ -5,13 +5,17 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Switch
 import androidx.appcompat.app.AlertDialog
 import app.proyecto.R
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_home.*
 class HomeActivity : AppCompatActivity() {
@@ -47,10 +51,11 @@ class HomeActivity : AppCompatActivity() {
                 true
             }
             R.id.menu_editar_info->{
+                startActivity(Intent(this,EditarinfoActivity::class.java))
                 true
             }
             R.id.menu_eliminar_cuenta->{
-                showAlert(1)
+                startActivity(Intent(this,EliminarCuentaActivity::class.java))
                 true
             }
 
@@ -136,8 +141,6 @@ class HomeActivity : AppCompatActivity() {
      * 1= Eliminar Cuenta
      *
      */
-
-
     private fun showAlert(it: Int){
         val builder= AlertDialog.Builder(this)
         when(it){
@@ -158,15 +161,27 @@ class HomeActivity : AppCompatActivity() {
                     cerrarSesion()
                 })
                 builder.setNegativeButton("Cancelar",null)
-
             }
-
-
-
         }
-
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
 
+    private fun reauth(correo: String,contra:String){
+        val user = Firebase.auth.currentUser!!
+        val credential = EmailAuthProvider
+                .getCredential(correo, contra)
+        user.reauthenticate(credential)
+                .addOnCompleteListener { Log.d("algo", "User re-authenticated.") }
+    }
+
+    private fun eliminarCuenta(){
+        val user = Firebase.auth.currentUser!!
+        user.delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("eliminar", "La cuenta ah sido eliminada")
+                    }
+                }
     }
 }

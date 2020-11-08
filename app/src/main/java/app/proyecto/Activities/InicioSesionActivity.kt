@@ -113,6 +113,7 @@ class InicioSesionActivity : AppCompatActivity() {
 
         }
         startActivity(homeIntent)
+        finish()
     }
 
 
@@ -120,11 +121,13 @@ class InicioSesionActivity : AppCompatActivity() {
         val RegistroIntent = Intent(this, RegistroActivity::class.java).apply {
         }
         startActivity(RegistroIntent)
+        finish()
     }
     private fun showRecuperacion() {
         val RecuperacionIntent = Intent(this, RecuperacionActivity::class.java).apply {
         }
         startActivity(RecuperacionIntent)
+        finish()
     }
 
     private fun session() {
