@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import app.proyecto.Adapters.AdapterCheckBox;
-import app.proyecto.Adapters.CustomAdapter;
 import app.proyecto.R;
 
 public class PagoActivity extends AppCompatActivity {
@@ -83,10 +82,6 @@ public class PagoActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         L_ListaClientes.setAdapter(adapter);
-
-        
-
-
 
 
     }
