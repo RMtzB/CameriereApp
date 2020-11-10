@@ -24,19 +24,12 @@
 
             <EditText
                 android:id="@+id/txtNombre"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Nombre(s)"
                 android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/txtApellidos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Apellido(s)"
-                android:inputType="textPersonName" />
         </LinearLayout>
 
         <EditText
@@ -71,7 +64,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnRegistrar2"
+                android:id="@+id/btnRegistrar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Registrar" />

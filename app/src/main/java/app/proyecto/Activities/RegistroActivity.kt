@@ -1,18 +1,19 @@
 package app.proyecto.Activities
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import app.proyecto.DataAccess.DBFirebase
+import app.proyecto.Models.Usuario
 import app.proyecto.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_registro.*
-import kotlinx.android.synthetic.main.activity_registro.btnRegistrar2
 class RegistroActivity : AppCompatActivity() {
 
     private val db=FirebaseFirestore.getInstance()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
@@ -21,28 +22,33 @@ class RegistroActivity : AppCompatActivity() {
     }
     private fun setup(){
         title="Registrate"
-        btnRegistrar2.setOnClickListener{
+        btnRegistrar.setOnClickListener{
             if(datosCorrectos()){
+                var pd = ProgressDialog(this)
+                pd.setMessage("Registrando Nuevo Usuario...")
+                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                pd.setCancelable(false)
+                pd.show()
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(txtCorreoEle.text.toString(),txtConfirmContrase.text.toString()).addOnCompleteListener{
                     if(it.isSuccessful){
-                        db.collection("user").document(txtCorreoEle.text.toString()).set(
-                                hashMapOf("CorreoE" to txtCorreoEle.text.toString(),
-                                        "Nombre" to txtNombre.text.toString(),
-                                        "Apellido" to txtApellidos.text.toString())
-                        )
-                        guardarLocal(txtNombre.text.toString(),txtApellidos.text.toString(),txtCorreoEle.text.toString())
-                        showhome(txtCorreoEle.text.toString(),txtNombre.text.toString(),txtApellidos.text.toString())
+                        DBFirebase.miUsuario=Usuario(txtNombre.text.toString(),txtCorreoEle.text.toString())
+                        DBFirebase.subirUsuarioData()
+                        guardarLocal(DBFirebase.miUsuario)
+                        pd.dismiss()
+                        showhome(DBFirebase.miUsuario)
                     }
-                    else
+                    else {
                         showAlert(0)
+                        pd.dismiss()
+                    }
                 }
             }
+            else
+                showAlert(1)
         }
-
     }
     private fun datosCorrectos():Boolean{
         if(txtNombre.text.isNotEmpty()&&
-                txtApellidos.text.isNotEmpty()&&
                 txtCorreoEle.text.isNotEmpty()&&
                 txtContrase.text.isNotEmpty()&&
                 txtConfirmContrase.text.isNotEmpty())
@@ -74,19 +80,17 @@ class RegistroActivity : AppCompatActivity() {
         dialog.show()
 
     }
-    private fun showhome(email:String, name: String, ape:String){
+    private fun showhome(u:Usuario){
         val homeIntet = Intent(this, HomeActivity::class.java).apply {
-            putExtra("email", email)
-            putExtra("name", name)
-            putExtra("ape",ape)
+            putExtra("correo",u.CorreoE)
+            putExtra("name", u.Nombre)
         }
         startActivity(homeIntet)
     }
-    private fun guardarLocal(Nombre:String, Apellido:String, CorreoE:String) {
+    fun guardarLocal(u:Usuario) {
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-        prefs.putString("name", Nombre)
-        prefs.putString("ape", Apellido)
-        prefs.putString("email",CorreoE)
+        prefs.putString("name", u.Nombre)
+        prefs.putString("email",u.CorreoE)
         prefs.apply()
 
     }

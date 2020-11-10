@@ -29,7 +29,7 @@
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
       <EditText
-        android:id="@+id/txtCorreo"
+        android:id="@+id/txtInicio_CorreoElect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress" />
@@ -45,7 +45,7 @@
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
 
       <EditText
-        android:id="@+id/txtContraseña"
+        android:id="@+id/txtInicio_Contraseña"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword" />

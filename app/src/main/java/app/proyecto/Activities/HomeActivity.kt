@@ -3,59 +3,51 @@ package app.proyecto.Activities
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Switch
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import app.proyecto.DataAccess.DBFirebase
 import app.proyecto.R
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_home.*
+
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         codigoGuardado()
         super.onCreate(savedInstanceState)
         val bundle=intent.extras
-        val name=bundle?.getString("name")
-        val ape=bundle?.getString("ape")
-        val correo=bundle?.getString("correo")
         setContentView(R.layout.activity_home)
 
         //setup
-        setup(name?:"",ape?:"",correo?:"")
+        setup()
         btnEscaner.setOnClickListener(mOnclickListener)
     }
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_home,menu)
+        menuInflater.inflate(R.menu.menu_home, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
-            R.id.menu_cambiar_contra->{
-                startActivity(Intent(this,CambiarContraseActivity::class.java))
+            R.id.menu_cambiar_contra -> {
+                startActivity(Intent(this, CambiarContraseActivity::class.java))
                 true
             }
 
-            R.id.menu_cerrar_sesion->{
-                showAlert(0)
+            R.id.menu_cerrar_sesion -> {
+                showAlert()
                 true
             }
-            R.id.menu_editar_info->{
-                startActivity(Intent(this,EditarinfoActivity::class.java))
+            R.id.menu_editar_info -> {
+                startActivity(Intent(this, EditarinfoActivity::class.java))
                 true
             }
-            R.id.menu_eliminar_cuenta->{
-                startActivity(Intent(this,EliminarCuentaActivity::class.java))
+            R.id.menu_eliminar_cuenta -> {
+                startActivity(Intent(this, EliminarCuentaActivity::class.java))
                 true
             }
 
@@ -69,12 +61,13 @@ class HomeActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         layoutHome.visibility = View.VISIBLE
+        txtVNombreC.text=DBFirebase.miUsuario.Nombre
+        txtvCorreo.text=DBFirebase.miUsuario.CorreoE
     }
 
-    private fun setup(name:String ,ape:String ,correo:String){
+    private fun setup(){
         title="Inicio"
-        txtVNombreC.text=name+ape
-        txtvCorreo.text=correo
+
         //txtvCodigo.text="Codigo"
 
     }
@@ -92,28 +85,28 @@ class HomeActivity : AppCompatActivity() {
     }
     private val mOnclickListener = View.OnClickListener { IntentIntegrator(this@HomeActivity).initiateScan() }
 
-    private fun showMain(codigo:String) {
+    private fun showMain(codigo: String) {
         val MainIntent = Intent(this, MainActivity::class.java).apply {
-            putExtra("codigo",codigo)
+            putExtra("codigo", codigo)
         }
         startActivity(MainIntent)
     }
 
-    private fun verificarCodigo(codigo:String):Boolean{
+    private fun verificarCodigo(codigo: String):Boolean{
         if("CCLOM"==codigo.split("-")[0] )
             return true
         return false
 
     }
 
-    private fun localCodigo(codigo:String){
+    private fun localCodigo(codigo: String){
         val prefs = getSharedPreferences(getString(R.string.prefs_codigo), Context.MODE_PRIVATE).edit()
         prefs.putString("codigo", codigo)
         prefs.apply()
     }
     private fun codigoGuardado(){
         val prefs = getSharedPreferences(getString(R.string.prefs_codigo), Context.MODE_PRIVATE)
-        val codigo = prefs.getString("codigo",null)
+        val codigo = prefs.getString("codigo", null)
 
         if (codigo != null) {
 //            layoutHome.visibility = View.INVISIBLE
@@ -128,60 +121,26 @@ class HomeActivity : AppCompatActivity() {
         onBackPressed()
     }
 
-    private fun showAlert(Error:String){
+    private fun showAlert(Error: String){
         val builder= AlertDialog.Builder(this)
         builder.setTitle("Error")
         builder.setMessage(Error)
-        builder.setPositiveButton("Aceptar",null)
+        builder.setPositiveButton("Aceptar", null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
-    /**
-     * 0 = cerrar sesion
-     * 1= Eliminar Cuenta
-     *
-     */
-    private fun showAlert(it: Int){
+
+    private fun showAlert(){
         val builder= AlertDialog.Builder(this)
-        when(it){
-            //en caso de la entradda =0 se cerrara sesion
-            0->{
                 builder.setTitle("Confirmar")
                 builder.setMessage("Seguro que desea Cerrar Sesion?")
-                builder.setPositiveButton("Aceptar", DialogInterface.OnClickListener(){ dialogInterface: DialogInterface, i: Int ->
+                builder.setPositiveButton("Aceptar", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int ->
                     cerrarSesion()
+                    startActivity(Intent(this, InicioSesionActivity::class.java))
                 })
-                builder.setNegativeButton("Cancelar",null)
-            }
-            //En caso de entrada=1 se Eliminara cuenta
-            1->{
-                builder.setTitle("Confirmar")
-                builder.setMessage("Seguro que desea Cerrar Sesion?")
-                builder.setPositiveButton("Aceptar", DialogInterface.OnClickListener(){ dialogInterface: DialogInterface, i: Int ->
-                    cerrarSesion()
-                })
-                builder.setNegativeButton("Cancelar",null)
-            }
-        }
+                builder.setNegativeButton("Cancelar", null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
 
-    private fun reauth(correo: String,contra:String){
-        val user = Firebase.auth.currentUser!!
-        val credential = EmailAuthProvider
-                .getCredential(correo, contra)
-        user.reauthenticate(credential)
-                .addOnCompleteListener { Log.d("algo", "User re-authenticated.") }
-    }
-
-    private fun eliminarCuenta(){
-        val user = Firebase.auth.currentUser!!
-        user.delete()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("eliminar", "La cuenta ah sido eliminada")
-                    }
-                }
-    }
 }
