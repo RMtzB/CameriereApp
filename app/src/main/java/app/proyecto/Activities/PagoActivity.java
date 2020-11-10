@@ -45,7 +45,7 @@ public class PagoActivity extends AppCompatActivity {
     private RadioButton rb_PayPal, rb_Efectivo;
     private CheckBox Todos;
     private int listo = 0;
-    int a_cliente [];
+    Boolean Clientes[];
     int clientes = 0;
     private int i=0;
 
@@ -107,43 +107,26 @@ public class PagoActivity extends AppCompatActivity {
 
     }
 
-    private void ObtenTotales (View view) {
+    private void CambiaTotal (View view) {
         if (L_ListaClientes.getSelectedItem() == null){
             Total.setText("");
         }else{
-            L_ListaClientes.getSelectedItemPosition();
+            L_ListaClientes.getCheckedItemPositions(); //DUDA AAAAAAAAAAAAAAAAAAA
         }
-    }
-
-    /*public void CambiaTotal (View view){
-        a_cliente = new int [4];
-        int i_Total = 0;
-        for (int i = 0; i< 4; i++)
-            a_cliente[i] = i+3;
-        if (Cliente1.isChecked())
-            i_Total = i_Total + a_cliente[1];
-        if (Cliente2.isChecked())
-            i_Total = i_Total + a_cliente[2];
-        if (Cliente3.isChecked())
-            i_Total = i_Total + a_cliente[3];
-        if (Cliente4.isChecked())
-            i_Total = i_Total + a_cliente[4];
-        Total.setText(i_Total);
     }
 
     public void SeleccionarTodos (View view){
+        int j;
         if (Todos.isChecked()) {
-            Cliente1.setChecked(true);
-            Cliente2.setChecked(true);
-            Cliente3.setChecked(true);
-            Cliente4.setChecked(true);
+            for (j = 0; j<i; j++)
+                L_ListaClientes.setItemChecked(j, true);
+            clientes = i;
         }else{
-            Cliente1.setChecked(false);
-            Cliente2.setChecked(false);
-            Cliente3.setChecked(false);
-            Cliente4.setChecked(false);
+            for (j = 0; j<i; j++)
+                L_ListaClientes.setItemChecked(j, false);
+            clientes = 0;
         }
-    }*/
+    }
 
     public void Confirmar (View view){
 
