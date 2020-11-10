@@ -16,7 +16,6 @@ class AdapterCheckBox (val lista: ArrayList<String>, val context: Context):
 
     class ViewHolder(val view:View): RecyclerView.ViewHolder(view){
         val Ad_Check = view.checkbox
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

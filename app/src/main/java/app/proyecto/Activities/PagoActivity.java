@@ -3,6 +3,7 @@ package app.proyecto.Activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import java.util.Collection;
 
 import app.proyecto.Adapters.AdapterCheckBox;
 import app.proyecto.R;
+import app.proyecto.databinding.ActivityMainBinding;
+import app.proyecto.databinding.ActivityPagoBinding;
 
 public class PagoActivity extends AppCompatActivity {
 
@@ -44,10 +47,14 @@ public class PagoActivity extends AppCompatActivity {
     private int listo = 0;
     int a_cliente [];
     int clientes = 0;
+    private int i=0;
 
     private ListView L_ListaClientes;
-    private AdapterCheckBox adapter;
     private ArrayList<String> S_ListaClientes = new ArrayList<>();
+    private ArrayList<Double> T_ListaClientes = new ArrayList<>();
+    private AdapterCheckBox adapter = new AdapterCheckBox(S_ListaClientes,this);
+    private ActivityPagoBinding PagoGrafico;
+    private LinearLayoutManager layoutManager;
 
     public PagoActivity() {
     }
@@ -58,6 +65,10 @@ public class PagoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PagoGrafico = ActivityPagoBinding.inflate(getLayoutInflater());
+        PagoGrafico.LListaClientes.setLayoutManager(new LinearLayoutManager(this)); // :O
+        PagoGrafico.LListaClientes.setAdapter(adapter);
 
         textViewData = findViewById(R.id.txt_Total);
 
@@ -74,15 +85,15 @@ public class PagoActivity extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     S_ListaClientes.add((String) documentSnapshot.get("Nombre"));
-
+                    T_ListaClientes.add((Double) documentSnapshot.get("Total"));
+                    i = i+1;
                 }
+                adapter.notifyDataSetChanged();
             }
         });
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        L_ListaClientes.setAdapter(adapter);
-
 
     }
 
@@ -96,34 +107,13 @@ public class PagoActivity extends AppCompatActivity {
 
     }
 
-    /*private void ObtenTotales (View view){
-        MesaRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()) {
-                            String titulo = documentSnapshot.getString(KEY_TITLE);
-                            String description = documentSnapshot.getString(KEY_DESCRIPTION);
-
-                            //Map<String, Object> note = documentSnapshot.getData();
-
-                            textViewData.setText("Title: "+ titulo + "\n" + "Description: " + description);
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "Documento inexistente", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, e.toString());
-                    }
-                })
-
-    }*/
+    private void ObtenTotales (View view) {
+        if (L_ListaClientes.getSelectedItem() == null){
+            Total.setText("");
+        }else{
+            L_ListaClientes.getSelectedItemPosition();
+        }
+    }
 
     /*public void CambiaTotal (View view){
         a_cliente = new int [4];
