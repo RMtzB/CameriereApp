@@ -45,8 +45,9 @@ public class PagoActivity extends AppCompatActivity {
     private RadioButton rb_PayPal, rb_Efectivo;
     private CheckBox Todos;
     private int listo = 0;
-    Boolean Clientes[];
+    boolean Clientes[];
     int clientes = 0;
+    Double i_Total;
     private int i=0;
 
     private ListView L_ListaClientes;
@@ -94,7 +95,7 @@ public class PagoActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        Clientes = new boolean[i];
     }
 
     @Override
@@ -108,10 +109,16 @@ public class PagoActivity extends AppCompatActivity {
     }
 
     private void CambiaTotal (View view) {
+        i_Total = 0.0;
         if (L_ListaClientes.getSelectedItem() == null){
             Total.setText("");
         }else{
-            L_ListaClientes.getCheckedItemPositions(); //DUDA AAAAAAAAAAAAAAAAAAA
+            Clientes = L_ListaClientes.getCheckedItemPositions(); //DUDA AAAAAAAAAAAAAAAAAA Guardar
+            for (int j=0; j<i; j++){
+                if (Clientes[j])
+                    i_Total = i_Total + T_ListaClientes.get(j);
+            }
+            Total.setText("" + i_Total);
         }
     }
 
@@ -126,6 +133,7 @@ public class PagoActivity extends AppCompatActivity {
                 L_ListaClientes.setItemChecked(j, false);
             clientes = 0;
         }
+        CambiaTotal(view);
     }
 
     public void Confirmar (View view){
