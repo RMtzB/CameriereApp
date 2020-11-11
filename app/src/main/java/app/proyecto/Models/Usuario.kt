@@ -1,4 +1,4 @@
 package app.proyecto.Models
 
-class Usuario(val Nombre:String,val CorreoE:String)
+class Usuario(var Nombre:String, var CorreoE:String)
 

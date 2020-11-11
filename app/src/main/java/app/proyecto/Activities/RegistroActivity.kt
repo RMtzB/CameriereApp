@@ -1,11 +1,10 @@
 package app.proyecto.Activities
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import app.proyecto.DataAccess.DBFirebase
+import app.proyecto.DataAccess.DBUser
 import app.proyecto.Models.Usuario
 import app.proyecto.R
 import com.google.firebase.auth.FirebaseAuth
@@ -31,11 +30,11 @@ class RegistroActivity : AppCompatActivity() {
                 pd.show()
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(txtCorreoEle.text.toString(),txtConfirmContrase.text.toString()).addOnCompleteListener{
                     if(it.isSuccessful){
-                        DBFirebase.miUsuario=Usuario(txtNombre.text.toString(),txtCorreoEle.text.toString())
-                        DBFirebase.subirUsuarioData()
-                        guardarLocal(DBFirebase.miUsuario)
+                        DBUser.miUsuario=Usuario(txtNombre.text.toString(),txtCorreoEle.text.toString())
+                        DBUser.subirUsuarioData()
+                        DBUser.guardarLocal(this)
                         pd.dismiss()
-                        showhome(DBFirebase.miUsuario)
+                        showhome()
                     }
                     else {
                         showAlert(0)
@@ -80,18 +79,11 @@ class RegistroActivity : AppCompatActivity() {
         dialog.show()
 
     }
-    private fun showhome(u:Usuario){
+    private fun showhome(){
         val homeIntet = Intent(this, HomeActivity::class.java).apply {
-            putExtra("correo",u.CorreoE)
-            putExtra("name", u.Nombre)
         }
         startActivity(homeIntet)
+        finish()
     }
-    fun guardarLocal(u:Usuario) {
-        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-        prefs.putString("name", u.Nombre)
-        prefs.putString("email",u.CorreoE)
-        prefs.apply()
 
-    }
 }

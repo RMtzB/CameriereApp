@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import app.proyecto.DataAccess.DBFirebase
+import app.proyecto.DataAccess.DBUser
 import app.proyecto.R
 import kotlinx.android.synthetic.main.activity_eliminar_cuenta.*
 
@@ -18,8 +18,10 @@ class EliminarCuentaActivity : AppCompatActivity() {
         btnEliminar_Confirmar.setOnClickListener(){
             if(switchConfirmar.isChecked){
                 if (txtEliminar_Contra.text.isNotEmpty()){
-                    DBFirebase.reauth(txtEliminar_Contra.text.toString(),this)
-                    DBFirebase.eliminarCuenta(this)
+                    DBUser.reauth(txtEliminar_Contra.text.toString(),this)
+                    DBUser.eliminarCuenta(this)
+                    DBUser.eliminarDatosCuenta()
+                    DBUser.borrarLocal(this)
                     startActivity(Intent(this,InicioSesionActivity::class.java))
                     finish()
                 }
@@ -29,7 +31,6 @@ class EliminarCuentaActivity : AppCompatActivity() {
             else
                 showAlert(0)
         }
-
         btnEliminar_Cancelar.setOnClickListener(){
             startActivity(Intent(this,HomeActivity::class.java))
             finish()

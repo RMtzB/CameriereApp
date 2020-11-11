@@ -9,7 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import app.proyecto.DataAccess.DBFirebase
+import app.proyecto.DataAccess.DBUser
 import app.proyecto.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.zxing.integration.android.IntentIntegrator
@@ -19,7 +19,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         codigoGuardado()
         super.onCreate(savedInstanceState)
-        val bundle=intent.extras
         setContentView(R.layout.activity_home)
 
         //setup
@@ -40,6 +39,7 @@ class HomeActivity : AppCompatActivity() {
 
             R.id.menu_cerrar_sesion -> {
                 showAlert()
+                DBUser.borrarLocal(this)
                 true
             }
             R.id.menu_editar_info -> {
@@ -48,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
             }
             R.id.menu_eliminar_cuenta -> {
                 startActivity(Intent(this, EliminarCuentaActivity::class.java))
+                DBUser.borrarLocal(this)
                 true
             }
 
@@ -61,8 +62,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         layoutHome.visibility = View.VISIBLE
-        txtVNombreC.text=DBFirebase.miUsuario.Nombre
-        txtvCorreo.text=DBFirebase.miUsuario.CorreoE
+        txtVNombreC.text=DBUser.miUsuario.Nombre
+        txtvCorreo.text=DBUser.miUsuario.CorreoE
     }
 
     private fun setup(){
@@ -114,9 +115,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
     private fun cerrarSesion(){
-        val prefs= getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-        prefs.clear()
-        prefs.apply()
+        DBUser.borrarLocal(this)
         FirebaseAuth.getInstance().signOut()
         onBackPressed()
     }

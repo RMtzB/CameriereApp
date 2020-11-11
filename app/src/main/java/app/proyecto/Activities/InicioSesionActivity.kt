@@ -1,14 +1,12 @@
 package app.proyecto.Activities
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import app.proyecto.DataAccess.DBFirebase
-import app.proyecto.Models.Usuario
+import app.proyecto.DataAccess.DBUser
 import app.proyecto.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_iniciosesion.*
@@ -27,7 +25,7 @@ class InicioSesionActivity : AppCompatActivity() {
     }
 
     private fun setup() {
-        DBFirebase.iniciarLista()
+        DBUser.iniciarLista()
 
         btnIniciarSesion.setOnClickListener {
             if (datosCorrectos()) {
@@ -40,10 +38,10 @@ class InicioSesionActivity : AppCompatActivity() {
                 val correo = txtInicio_CorreoElect.text.toString()
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(correo,txtInicio_Contraseña.text.toString()).addOnCompleteListener{
                     if(it.isSuccessful) {
-                        DBFirebase.optenerUsuario(correo,this)
-                        guardarLocal(DBFirebase.miUsuario)
+                        DBUser.optenerUsuario(correo,this)
+                        DBUser.guardarLocal(this)
                         pd.dismiss()
-                        showhome(DBFirebase.miUsuario)
+                        showhome()
                     }
                     else{
                         pd.dismiss()
@@ -84,10 +82,8 @@ class InicioSesionActivity : AppCompatActivity() {
 
     }
 
-    private fun showhome(u:Usuario) {
+    private fun showhome() {
         val homeIntent = Intent(this, HomeActivity::class.java).apply {
-            putExtra("name",u.Nombre)
-            putExtra("correo",u.CorreoE)
         }
         startActivity(homeIntent)
         finish()
@@ -108,26 +104,10 @@ class InicioSesionActivity : AppCompatActivity() {
     }
 
     private fun session() {
-        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
-        val email = prefs.getString("email", null)
-        val name = prefs.getString("name", null)
 
-        if (email != null) {
-        //    lyini.visibility = View.INVISIBLE
-            val u=Usuario(name?:"",email?:"")
-            DBFirebase.optenerUsuario(u)
-            showhome(u)
+        if (DBUser.leerLocal(this)) {
+            showhome()
 
         }
     }
-
-
-    private fun guardarLocal(u: Usuario) {
-        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-        prefs.putString("name", u.Nombre)
-        prefs.putString("email",u.CorreoE)
-        prefs.apply()
-    }
-
-
 }

@@ -26,11 +26,12 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <EditText
-                android:id="@+id/txtActualizarNombre"
+                android:id="@+id/txtActualizar_Nombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:text=""/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.legacy.widget.Space
@@ -46,7 +47,7 @@
             app:endIconMode="clear_text"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <EditText
-            android:id="@+id/txtActualizarCorreo"
+            android:id="@+id/txtActualizar_Correo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
