@@ -14,16 +14,18 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.277">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="Nombre(s)"
-                app:endIconMode="clear_text"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Nombre(s)"
+            app:endIconMode="clear_text">
 
             <EditText
                 android:id="@+id/txtActualizar_Nombre"
@@ -31,27 +33,47 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text=""/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:text="" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.legacy.widget.Space
-                android:layout_width="20dp"
-                android:layout_height="1dp"
-                ></androidx.legacy.widget.Space>
+        <androidx.legacy.widget.Space
+            android:layout_width="20dp"
+            android:layout_height="1dp"></androidx.legacy.widget.Space>
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:hint="Correo Electronico"
-            app:endIconMode="clear_text"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <EditText
-            android:id="@+id/txtActualizar_Correo"
+            app:endIconMode="clear_text">
+
+            <EditText
+                android:id="@+id/txtActualizar_Correo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.legacy.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="30dp"></androidx.legacy.widget.Space>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:layout_marginBottom="16dp"
+            android:hint="para cambiar correo verifica tu contraseña"
+            app:endIconMode="password_toggle">
+
+            <EditText
+                android:id="@+id/txtActualizar_Contra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -61,8 +83,7 @@
 
             <androidx.legacy.widget.Space
                 android:layout_width="10dp"
-                android:layout_height="1dp"
-                ></androidx.legacy.widget.Space>
+                android:layout_height="1dp"></androidx.legacy.widget.Space>
 
             <Button
                 android:id="@+id/btnEditar_actualizar"
@@ -72,8 +93,7 @@
 
             <androidx.legacy.widget.Space
                 android:layout_width="20dp"
-                android:layout_height="1dp"
-                ></androidx.legacy.widget.Space>
+                android:layout_height="1dp"></androidx.legacy.widget.Space>
 
             <Button
                 android:id="@+id/btnEditar_cancelar"

@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:hint="Contaseña"
-            app:endIconMode="clear_text">
+            app:endIconMode="password_toggle">
 
             <EditText
                 android:id="@+id/txtEliminar_Contra"

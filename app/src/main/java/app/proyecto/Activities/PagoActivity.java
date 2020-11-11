@@ -113,7 +113,11 @@ public class PagoActivity extends AppCompatActivity {
         if (L_ListaClientes.getSelectedItem() == null){
             Total.setText("");
         }else{
+<<<<<<< HEAD
 //            Clientes = L_ListaClientes.getCheckedItemPositions(); //DUDA AAAAAAAAAAAAAAAAAA Guardar
+=======
+            //Clientes = L_ListaClientes.getCheckedItemPositions(); //DUDA AAAAAAAAAAAAAAAAAA Guardar
+>>>>>>> 173771481e5404f3c869db34917f1794a69afad8
             for (int j=0; j<i; j++){
                 if (Clientes[j])
                     i_Total = i_Total + T_ListaClientes.get(j);
