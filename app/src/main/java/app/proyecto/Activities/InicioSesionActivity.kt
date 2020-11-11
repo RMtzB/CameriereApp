@@ -38,7 +38,7 @@ class InicioSesionActivity : AppCompatActivity() {
                 val correo = txtInicio_CorreoElect.text.toString()
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(correo,txtInicio_Contraseña.text.toString()).addOnCompleteListener{
                     if(it.isSuccessful) {
-                        DBUser.optenerUsuario(correo,this)
+                        DBUser.obtenerUsuario(correo,this)
                         DBUser.guardarLocal(this)
                         pd.dismiss()
                         showhome()

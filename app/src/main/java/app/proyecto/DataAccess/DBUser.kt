@@ -26,7 +26,7 @@ object DBUser {
         )
     }
 
-    fun actualizarUsuarioData(nombre:String,correo:String) {
+    fun actualizarUsuarioData(nombre:String,correo:String,c:Context) {
         lateinit var aux:String
         db.collection("user").get().addOnCompleteListener() {
             if (it.isSuccessful) {
@@ -41,6 +41,7 @@ object DBUser {
                     if (miUsuario.CorreoE != correo) {
                         miUsuario = Usuario(nombre, correo)
                         cambiarDato(2,aux)
+                        cambiarCorreoUser(c)
 
                     } else {
                         //Cambiar solo nombre
@@ -52,14 +53,12 @@ object DBUser {
                         //Cambiar solo Correo
                         miUsuario.CorreoE = correo
                         cambiarDato(1,aux)
-                        cambiarCorreoUser()
+                        cambiarCorreoUser(c)
                     }
             }
         }
     }
-
-
-    fun optenerUsuario(correo:String,c:Context){
+    fun obtenerUsuario(correo:String, c:Context){
         for (Usu in lista){
             if(Usu.CorreoE==correo) {
                 miUsuario = Usuario(Usu.Nombre, Usu.CorreoE)
@@ -69,7 +68,6 @@ object DBUser {
         }
         lista.clear()
     }
-
     fun iniciarLista(){
         db.collection("user").get().addOnCompleteListener() {
             if(it.isSuccessful){
@@ -108,12 +106,21 @@ object DBUser {
                         Toast.makeText(c,"No se pudo eliminar la cuenta",Toast.LENGTH_SHORT).show()
                 }
     }
-    fun eliminarDatosCuenta(){
-        db.collection("user").document(miUsuario.CorreoE)
-                .delete()
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+    fun eliminarDatosCuenta() {
+        lateinit var aux: String
+        db.collection("user").get().addOnCompleteListener() {
+            if (it.isSuccessful) {
+                for (documentos in it.result!!) {
+                    if (documentos.getString("CorreoE").equals(miUsuario.CorreoE))
+                        aux = documentos.id
+                }
+            }
+            db.collection("user").document(aux)
+                    .delete()
+                    .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+                    .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
 
+        }
     }
     fun cambiarContra(newPassword: String){
         val user = Firebase.auth.currentUser
@@ -147,13 +154,13 @@ object DBUser {
                     .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
         }
     }
-    fun cambiarCorreoUser(){
+    fun cambiarCorreoUser(c:Context){
         val user = Firebase.auth.currentUser
         user!!.updateEmail(miUsuario.CorreoE)
                 .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "User email address updated.")
-                    }
+                    if (task.isSuccessful)
+                        Log.w(TAG, "Error adding document")
+
                 }
     }
     fun guardarLocal(c:Context) {
