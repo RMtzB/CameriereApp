@@ -65,7 +65,7 @@ public class PagoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_pago);
 
         PagoGrafico = ActivityPagoBinding.inflate(getLayoutInflater());
         PagoGrafico.LListaClientes.setLayoutManager(new LinearLayoutManager(this)); // :O
@@ -113,7 +113,7 @@ public class PagoActivity extends AppCompatActivity {
         if (L_ListaClientes.getSelectedItem() == null){
             Total.setText("");
         }else{
-            Clientes = L_ListaClientes.getCheckedItemPositions(); //DUDA AAAAAAAAAAAAAAAAAA Guardar
+//            Clientes = L_ListaClientes.getCheckedItemPositions(); //DUDA AAAAAAAAAAAAAAAAAA Guardar
             for (int j=0; j<i; j++){
                 if (Clientes[j])
                     i_Total = i_Total + T_ListaClientes.get(j);

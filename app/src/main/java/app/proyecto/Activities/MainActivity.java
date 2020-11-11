@@ -86,8 +86,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(MainActivity.this, ShoppingOrdersActivity.class);
+
 				switch(item.getItemId()) {
 					case R.id.ordersList:
+						intent.putExtra("Code", code);
+
 						startActivity(intent);
 						break;
 					case R.id.shoppingCart:

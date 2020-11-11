@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import java.util.List;
 import app.proyecto.Adapters.RecyclerViewAdapterShoppingOrders;
+import app.proyecto.DataAccess.DBUser;
 import app.proyecto.Models.CartOrdersItem;
 import app.proyecto.R;
 import app.proyecto.Utils.BusinessLogic;
@@ -30,6 +31,7 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 	private RecyclerViewAdapterShoppingOrders recyclerViewAdapterShoppingOrders;
 	private BusinessLogic businessLogic;
 	private boolean cart;
+	private String[] code;
 	private ArrayAdapter<CharSequence> spinnerAdapter;
 
 	@Override
@@ -56,6 +58,10 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 
 		if(bundle != null) {
 			cart = bundle.getBoolean("Cart", false);
+
+			if (!cart) {
+				code = bundle.getStringArray("Code");
+			}
 		}
 	}
 
@@ -79,9 +85,10 @@ public class ShoppingOrdersActivity extends AppCompatActivity implements OnClick
 			public void onClick(View view) {
 				if(cart) {
 					businessLogic.sendOrder(items, recyclerViewAdapterShoppingOrders);
+
 					Toast.makeText(ShoppingOrdersActivity.this, "Su pedido fue enviado correctamente", Toast.LENGTH_SHORT).show();
 				} else {
-					Toast.makeText(ShoppingOrdersActivity.this, "gfdgfdgdf", Toast.LENGTH_SHORT).show();
+					businessLogic.sendTotal(code, DBUser.miUsuario.getNombre(), items, ShoppingOrdersActivity.this, ShoppingOrdersActivity.this);
 				}
 			}
 		});

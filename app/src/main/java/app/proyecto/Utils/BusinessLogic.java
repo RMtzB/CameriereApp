@@ -1,14 +1,26 @@
 package app.proyecto.Utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import app.proyecto.Activities.PagoActivity;
+import app.proyecto.Activities.ShoppingOrdersActivity;
 import app.proyecto.Adapters.RecyclerViewAdapterMenu;
 import app.proyecto.Adapters.RecyclerViewAdapterShoppingOrders;
 import app.proyecto.DataAccess.DAO;
@@ -95,6 +107,45 @@ public class BusinessLogic {
 
 		itemsInCart.clear();
 		recyclerViewAdapterShoppingOrders.notifyDataSetChanged();
+	}
+
+	public void sendTotal(String[] code, String name, List<CartOrdersItem> items, Activity activity, Context context) {
+		if(!items.isEmpty()) {
+			double total = 0;
+			CartOrdersItem item;
+			Map<String, Object> cuenta = new HashMap<>();
+			FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+			for(int i = 0; i < items.size(); i++) {
+				item = items.get(i);
+
+				total += item.getPieces() * item.getPrice();
+			}
+
+			cuenta.put("Nombre", name);
+			cuenta.put("Total", total);
+
+			firebaseFirestore
+				.collection("Restaurants")
+				.document(code[1])
+				.collection(code[2])
+				.document(name)
+				.set(cuenta).addOnSuccessListener(new OnSuccessListener<Void>() {
+				@Override
+				public void onSuccess(Void aVoid) {
+					Intent intent = new Intent(context, PagoActivity.class);
+
+					intent.putExtra("Code", code);
+
+					activity.startActivity(intent);
+				}
+			}).addOnFailureListener(new OnFailureListener() {
+				@Override
+				public void onFailure(@NonNull Exception e) {
+					Toast.makeText(context, "Algo salio mal!! :s", Toast.LENGTH_SHORT).show();
+				}
+			});
+		}
 	}
 
 	public void closeConnection() {
