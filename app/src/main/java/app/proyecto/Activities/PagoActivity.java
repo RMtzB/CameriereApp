@@ -41,7 +41,7 @@ import app.proyecto.databinding.ActivityPagoBinding;
 public class PagoActivity extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference MesaRef = db.collection( "Restaurants").document(""); //Cambiar Valores cuando Rulin haga el método
+     //Cambiar Valores cuando Rulin haga el método
     private TextView textViewData;
     private EditText Total;
     private RadioButton rb_PayPal, rb_Efectivo;
@@ -87,6 +87,8 @@ public class PagoActivity extends AppCompatActivity {
         L_ListaClientes = (ListView) findViewById(R.id.L_ListaClientes);
         L_ListaClientes.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
+        CollectionReference MesaRef = db.collection("Restaurants").document(Code[1]).collection(Code[2]);
+
         MesaRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -98,6 +100,8 @@ public class PagoActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+
+
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -128,12 +132,12 @@ public class PagoActivity extends AppCompatActivity {
 
     }
 
-    private void CambiaTotal (View view) {
+    public void CambiaTotal (View view) {
         i_Total = 0.0;
         if (L_ListaClientes.getSelectedItem() == null){
             Total.setText("");
         }else{
-            Clientes = L_ListaClientes.getCheckedItemPositions(); //DUDA
+            Clientes = L_ListaClientes.getCheckedItemPositions();
             for (int j=0; j<i; j++){
                 if (Clientes.get(j))
                     i_Total = i_Total + T_ListaClientes.get(j);
