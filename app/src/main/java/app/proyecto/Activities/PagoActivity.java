@@ -41,7 +41,7 @@ import app.proyecto.databinding.ActivityPagoBinding;
 public class PagoActivity extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference MesaRef = db.collection( "user"); //Cambiar Valores cuando Rulin haga el método
+    private CollectionReference MesaRef = db.collection( "Restaurants").document(""); //Cambiar Valores cuando Rulin haga el método
     private TextView textViewData;
     private EditText Total;
     private RadioButton rb_PayPal, rb_Efectivo;
