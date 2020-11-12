@@ -5,9 +5,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -45,10 +47,12 @@ public class PagoActivity extends AppCompatActivity {
     private RadioButton rb_PayPal, rb_Efectivo;
     private CheckBox Todos;
     private int listo = 0;
-    boolean Clientes[];
+    SparseBooleanArray Clientes;
     int clientes = 0;
     Double i_Total;
     private int i=0;
+    private String[] Code;
+    private String Mesa;
 
     private ListView L_ListaClientes;
     private ArrayList<String> S_ListaClientes = new ArrayList<>();
@@ -60,12 +64,14 @@ public class PagoActivity extends AppCompatActivity {
     public PagoActivity() {
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pago);
+
+        Code = getExtras();
+        Mesa = Code[2];
 
         PagoGrafico = ActivityPagoBinding.inflate(getLayoutInflater());
         PagoGrafico.LListaClientes.setLayoutManager(new LinearLayoutManager(this)); // :O
@@ -95,7 +101,21 @@ public class PagoActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Clientes = new boolean[i];
+    }
+
+    private String[] getExtras() {
+        Intent intent = getIntent();
+        String[] code;
+
+        Bundle bundle = intent.getExtras();
+
+        if(bundle != null && bundle.getString("codigo") != null) {
+            code = bundle.getString("codigo").split("-");
+        } else {
+            code = new String[]{"F"};
+        }
+
+        return code;
     }
 
     @Override
@@ -113,13 +133,9 @@ public class PagoActivity extends AppCompatActivity {
         if (L_ListaClientes.getSelectedItem() == null){
             Total.setText("");
         }else{
-<<<<<<< HEAD
-//            Clientes = L_ListaClientes.getCheckedItemPositions(); //DUDA AAAAAAAAAAAAAAAAAA Guardar
-=======
-            //Clientes = L_ListaClientes.getCheckedItemPositions(); //DUDA AAAAAAAAAAAAAAAAAA Guardar
->>>>>>> 173771481e5404f3c869db34917f1794a69afad8
+            Clientes = L_ListaClientes.getCheckedItemPositions(); //DUDA
             for (int j=0; j<i; j++){
-                if (Clientes[j])
+                if (Clientes.get(j))
                     i_Total = i_Total + T_ListaClientes.get(j);
             }
             Total.setText("" + i_Total);
