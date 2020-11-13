@@ -52,7 +52,6 @@ public class PagoActivity extends AppCompatActivity {
     Double i_Total;
     private int i=0;
     private String[] Code;
-    private String Mesa;
 
     private ListView L_ListaClientes;
     private ArrayList<String> S_ListaClientes = new ArrayList<>();
@@ -71,7 +70,6 @@ public class PagoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pago);
 
         Code = getExtras();
-        Mesa = Code[2];
 
         PagoGrafico = ActivityPagoBinding.inflate(getLayoutInflater());
         PagoGrafico.LListaClientes.setLayoutManager(new LinearLayoutManager(this)); // :O
@@ -112,12 +110,7 @@ public class PagoActivity extends AppCompatActivity {
         String[] code;
 
         Bundle bundle = intent.getExtras();
-
-        if(bundle != null && bundle.getString("codigo") != null) {
-            code = bundle.getString("codigo").split("-");
-        } else {
-            code = new String[]{"F"};
-        }
+        code = bundle.getStringArray("Code");
 
         return code;
     }
