@@ -91,6 +91,7 @@ class HomeActivity : AppCompatActivity() {
             putExtra("codigo", codigo)
         }
         startActivity(MainIntent)
+        finish()
     }
 
     private fun verificarCodigo(codigo: String):Boolean{

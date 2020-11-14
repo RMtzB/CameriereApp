@@ -1,6 +1,7 @@
 package app.proyecto.Activities
 
 import android.content.ContentValues
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,19 +12,24 @@ import app.proyecto.Adapters.AdapterCheckBox
 import app.proyecto.DataAccess.DBUser
 import app.proyecto.Models.Integrante
 import app.proyecto.R
+import app.proyecto.Utils.BusinessLogic
+import com.google.common.collect.ArrayListMultimap
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_pago.*
 
 class PagoActivity : AppCompatActivity() {
     lateinit var restaurant:String
+    lateinit var logiB:BusinessLogic
     lateinit var mesa:String
     var Total:Double=0.0
     private val lista:ArrayList<Integrante> = ArrayList();
     lateinit var adap:AdapterCheckBox
     val db : FirebaseFirestore = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pago)
+        logiB=BusinessLogic(this)
         adap= AdapterCheckBox(lista,ChPago_Todos,txtPago_Total,this)
         RVPago_ListaClientes.layoutManager=GridLayoutManager(this,1)
         RVPago_ListaClientes.adapter=adap
@@ -47,7 +53,6 @@ class PagoActivity : AppCompatActivity() {
             if (!rBPago_Efectivo.isChecked && !rBPago_PayPal.isChecked)
                 Toast.makeText(this,"Selecciona algun metodo de pago", Toast.LENGTH_SHORT).show()
             else{
-                var i=0
                 for (integrante in lista){
                     if(integrante.chek.isChecked){
                         db.collection("Restaurants")
@@ -56,17 +61,21 @@ class PagoActivity : AppCompatActivity() {
                                 document(integrante.nombre).delete().addOnCompleteListener(){
                                     if(it.isSuccessful){
                                         DBUser.i--
-                                        lista.removeAt(i)
+                                        lista.remove(integrante)
+                                        adap.notifyDataSetChanged()
+                                        logiB.deleteLists()
+                                        val prefs = getSharedPreferences(getString(R.string.prefs_codigo), Context.MODE_PRIVATE).edit()
+                                        prefs.clear()
+                                        prefs.apply()
 
                                     }
                                 }
-                        i++
                     }
+
                 }
                 marcarTodos(2)
                 DBUser.TotalGeneral=0.0
                 txtPago_Total.text="$ "+DBUser.TotalGeneral
-                adap.notifyDataSetChanged()
             }
 
         }
