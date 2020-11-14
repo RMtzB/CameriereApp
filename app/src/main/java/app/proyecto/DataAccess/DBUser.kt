@@ -18,7 +18,8 @@ object DBUser {
     lateinit var miUsuario: Usuario
     private val lista:ArrayList<Usuario> = ArrayList()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-
+    var TotalGeneral:Double= 0.0
+    var i:Int=0
     fun subirUsuarioData(){
         db.collection("user").add(
                 hashMapOf("CorreoE" to miUsuario.CorreoE,

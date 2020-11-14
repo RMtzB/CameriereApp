@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import app.proyecto.Activities.PagoActivity;
-import app.proyecto.Activities.ShoppingOrdersActivity;
 import app.proyecto.Adapters.RecyclerViewAdapterMenu;
 import app.proyecto.Adapters.RecyclerViewAdapterShoppingOrders;
 import app.proyecto.DataAccess.DAO;

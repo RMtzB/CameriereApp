@@ -8,13 +8,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <CheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="match_parent"
+            android:id="@+id/Card_CB"
+            android:layout_width="302dp"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/txtCard_Total"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16dp"
+            android:text="10000"
+            android:layout_marginRight="10dp"
             />
 
     </LinearLayout>

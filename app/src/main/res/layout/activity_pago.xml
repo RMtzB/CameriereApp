@@ -20,15 +20,33 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/L_ListaClientes"
+            android:id="@+id/RVPago_ListaClientes"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="CambiaTotal" />
+            android:layout_height="207dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/personitas" />
+
+            <CheckBox
+                android:id="@+id/ChPago_Todos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:text="Todos" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -37,39 +55,35 @@
                 android:text="$"
                 android:textSize="36sp" />
 
-            <EditText
-                android:id="@+id/txt_Total"
+            <TextView
+                android:id="@+id/txtPago_Total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:editable="false"
+                android:textAlignment="center"
+                android:text="0.0"
+                android:textSize="20dp"
                 android:ems="10" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <CheckBox
-                android:id="@+id/Ch_Todos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="SeleccionarTodos"
-                android:text="Todos" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:srcCompat="@drawable/personitas" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="312dp"
             android:layout_height="wrap_content"
-            android:text="Monto total" />
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="294dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monto total" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView4"
@@ -85,25 +99,24 @@
             android:layout_height="97dp">
 
             <RadioButton
-                android:id="@+id/rB_PayPal"
+                android:id="@+id/rBPago_PayPal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="PayPal" />
 
             <RadioButton
-                android:id="@+id/rB_Efectivo"
+                android:id="@+id/rBPago_Efectivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Efectivo" />
         </RadioGroup>
 
         <Button
-            android:id="@+id/b_Confirmar"
+            android:id="@+id/btnPago_Confirmar"
             android:layout_width="130dp"
             android:layout_height="40dp"
             android:layout_marginStart="135dp"
             android:layout_marginTop="10dp"
-            android:onClick="Confirmar"
             android:text="Confirmar" />
 
     </LinearLayout>
