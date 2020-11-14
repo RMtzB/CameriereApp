@@ -2,11 +2,14 @@ package app.proyecto.Activities
 
 import android.content.ContentValues
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.CheckBox
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import app.proyecto.Adapters.AdapterCheckBox
 import app.proyecto.DataAccess.DBUser
@@ -106,6 +109,27 @@ class PagoActivity : AppCompatActivity() {
                         Log.w(ContentValues.TAG, "No pude leer nada")
         }
 
+            db.collection("Restaurants")
+                    .document(restaurant)
+                    .collection(mesa).addSnapshotListener{snapshot,exception ->
+                        if(exception != null){
+                            Toast.makeText(this,"ah sucedido un error",Toast.LENGTH_SHORT).show()
+                        }
+                        lista.clear();
+                        snapshot?.forEach(){
+                            val nombre = it.getString("Nombre")
+                            val totalp:Double?= it.get("Total") as Double?
+
+                            if (nombre != null &&totalp != null ) {
+                                lista.add( Integrante(nombre,totalp) )
+
+                            }
+
+                        }
+                        adap.notifyDataSetChanged()
+                        if(lista.isEmpty())
+                            showAlert()
+                    }
     }
 
     private fun marcarTodos(i:Int){
@@ -122,9 +146,18 @@ class PagoActivity : AppCompatActivity() {
             }
         DBUser.TotalGeneral=Total
         txtPago_Total.text="$ "+DBUser.TotalGeneral
+    }
 
-
-
+    private fun showAlert(){
+        val builder= AlertDialog.Builder(this)
+        builder.setTitle("Mesa Cerrada")
+        builder.setMessage("Gracias por su visita, vuelva pronto")
+        builder.setPositiveButton("Aceptar", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int ->
+            startActivity(Intent(this, PromocionesActivity::class.java))
+            finish()
+        })
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 }
 

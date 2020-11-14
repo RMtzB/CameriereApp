@@ -1,5 +1,6 @@
 package app.proyecto.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.GridLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,6 +25,7 @@ class PromocionesActivity : AppCompatActivity() {
 
         rv_promos.layoutManager = GridLayoutManager(this,2)
         rv_promos.adapter=adapterPromo
+        setup()
 
         val db : FirebaseFirestore= FirebaseFirestore.getInstance()
         db.collection("Promos").get().addOnCompleteListener(){
@@ -38,4 +40,12 @@ class PromocionesActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun setup(){
+        btnPromo_home.setOnClickListener(){
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+        }
+    }
+
 }
