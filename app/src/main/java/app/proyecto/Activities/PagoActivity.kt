@@ -59,20 +59,19 @@ class PagoActivity : AppCompatActivity() {
                 for (integrante in lista){
                     if(integrante.chek.isChecked){
                         db.collection("Restaurants")
-                                .document(restaurant)
-                                .collection(mesa).
-                                document(integrante.nombre).delete().addOnCompleteListener(){
-                                    if(it.isSuccessful){
-                                        DBUser.i--
-                                        lista.remove(integrante)
-                                        adap.notifyDataSetChanged()
-                                        logiB.deleteLists()
-                                        val prefs = getSharedPreferences(getString(R.string.prefs_codigo), Context.MODE_PRIVATE).edit()
-                                        prefs.clear()
-                                        prefs.apply()
-
-                                    }
+                            .document(restaurant)
+                            .collection(mesa).
+                            document(integrante.nombre).delete().addOnCompleteListener(){
+                                if(it.isSuccessful){
+                                    DBUser.i--
+                                    lista.remove(integrante)
+                                    adap.notifyDataSetChanged()
+                                    logiB.deleteLists()
+                                    val prefs = getSharedPreferences(getString(R.string.prefs_codigo), Context.MODE_PRIVATE).edit()
+                                    prefs.clear()
+                                    prefs.apply()
                                 }
+                            }
                     }
 
                 }
@@ -154,7 +153,9 @@ class PagoActivity : AppCompatActivity() {
         builder.setMessage("Gracias por su visita, vuelva pronto")
         builder.setPositiveButton("Aceptar", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int ->
             startActivity(Intent(this, PromocionesActivity::class.java))
+            finishAffinity()
             finish()
+
         })
         val dialog: AlertDialog = builder.create()
         dialog.show()
