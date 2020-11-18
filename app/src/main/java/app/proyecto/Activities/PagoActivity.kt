@@ -139,7 +139,7 @@ class PagoActivity : AppCompatActivity() {
                         adap.notifyDataSetChanged()
                         Buscar()
                         if(lista.isEmpty())
-                            showAlert(this)
+                            showAlert()
                     }
     }
 
@@ -159,8 +159,8 @@ class PagoActivity : AppCompatActivity() {
         txtPago_Total.text="$ "+DBUser.TotalGeneral
     }
 
-    private fun showAlert(c:Context){
-        val builder= AlertDialog.Builder(c)
+    private fun showAlert(){
+        val builder= AlertDialog.Builder(this)
         builder.setTitle("Mesa Cerrada")
         builder.setMessage("Gracias por su visita, vuelva pronto")
         builder.setPositiveButton("Aceptar", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int ->
