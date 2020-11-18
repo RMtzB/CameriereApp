@@ -88,7 +88,7 @@ class PagoActivity : AppCompatActivity() {
                 break
             }
         }
-        if (bandera) {
+        if (!bandera) {
             logiB.deleteLists()
             val prefs = getSharedPreferences(getString(R.string.prefs_codigo), Context.MODE_PRIVATE).edit()
             prefs.clear()
