@@ -66,14 +66,10 @@ class PagoActivity : AppCompatActivity() {
                                     DBUser.i--
                                     lista.remove(integrante)
                                     adap.notifyDataSetChanged()
-                                    logiB.deleteLists()
-                                    val prefs = getSharedPreferences(getString(R.string.prefs_codigo), Context.MODE_PRIVATE).edit()
-                                    prefs.clear()
-                                    prefs.apply()
+                                    Buscar()
                                 }
                             }
                     }
-
                 }
                 marcarTodos(2)
                 DBUser.TotalGeneral=0.0
@@ -84,10 +80,25 @@ class PagoActivity : AppCompatActivity() {
 
     }
 
-        private fun llenarLista(){
+    private fun Buscar(){
+        var bandera=false
+        for (elem in lista){
+            if(elem.nombre.equals(DBUser.miUsuario.Nombre)) {
+                bandera = true
+                break
+            }
+        }
+        if (bandera) {
+            logiB.deleteLists()
+            val prefs = getSharedPreferences(getString(R.string.prefs_codigo), Context.MODE_PRIVATE).edit()
+            prefs.clear()
+            prefs.apply()
+        }
+    }
 
-        db.collection("Restaurants")
-                .document(restaurant)
+    private fun llenarLista(){
+    db.collection("Restaurants")
+        .document(restaurant)
                 .collection(mesa)
                 .get()
                 .addOnCompleteListener(){
@@ -126,6 +137,7 @@ class PagoActivity : AppCompatActivity() {
 
                         }
                         adap.notifyDataSetChanged()
+                        Buscar()
                         if(lista.isEmpty())
                             showAlert()
                     }
