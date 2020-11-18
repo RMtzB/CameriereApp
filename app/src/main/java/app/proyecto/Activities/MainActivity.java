@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 			@Override
 			public void onClick(View view) {
 				if(businessLogic.isOrdersEmpty()) {
+					Intent intent = new Intent(MainActivity.this, HomeActivity.class);
 					SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.CCLOM.PREFERENCE_CODIGO", MODE_PRIVATE);
 
 					Editor editor = sharedPreferences.edit();
@@ -115,6 +116,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 					editor.clear();
 					editor.apply();
 					businessLogic.deleteLists();
+
+					startActivity(intent);
 					finish();
 				} else {
 					Toast.makeText(MainActivity.this, "Favor de pagar su cuenta", Toast.LENGTH_LONG).show();
